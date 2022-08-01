@@ -1,0 +1,20 @@
+/*--------------------------------------------------------------
+# Parameters * Переменные и миксины
+--------------------------------------------------------------*/
+
+$basic-color-pink: #EB0045;
+$basic-color-black: #253746;
+$basic-color-gray: #F7F7FF;
+$basic-color-darkgray: #A8AFB5;
+
+$orange: #ef7b00;
+$blue: #1d2262;
+
+$familyBold: 'GothaProBold', 'OpenSans', serif;
+$familyReg: 'GothaProReg', 'OpenSans', serif;
+$familyLight: 'GothaProLight', 'OpenSans', serif;
+
+@mixin font($family, $size: initial) {
+  font-family: $family;
+  font-size: $size;
+}

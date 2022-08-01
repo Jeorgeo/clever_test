@@ -1,0 +1,198 @@
+@import "parameters.scss";
+
+/*--------------------------------------------------------------
+# Popup form
+--------------------------------------------------------------*/
+
+.wrap {
+  min-width: 100%;
+  min-height: 100%;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: auto;
+}
+.wrap--active {
+  position: fixed;
+  overflow: hidden;
+  pointer-events: none;
+  filter: blur(5px);
+}
+
+.btn.cloud-form__submit,
+.btn.btn--excellent {
+  display: inline;
+  margin-top: 10px;
+}
+
+.btn.btn--excellent {
+  margin-bottom: 10px;
+}
+
+.popup-question-close {
+  position: absolute;
+  left: 95%;
+  padding: 0;
+  margin: 0;
+  font-size: 20px;
+  color: #6D6D6D;
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.5s;
+
+  &:hover{
+    color: red;
+    transform: rotate(180deg);
+    transition: all 0.5s;
+  }
+}
+
+
+.popup-question,
+.popup-question-thanks {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 99999;
+  width: calc(100% - 10px);
+  max-width: 390px;
+  height: auto;
+  box-shadow: 0 15px 20px rgba(0,0,0,0.22),0 19px 60px rgba(0,0,0,0.3);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -150%);
+  transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+}
+
+.cloud-form__title {
+  margin-bottom: 0;
+  font-size: 1.5em;
+  font-weight: 900;
+  text-transform: uppercase;
+  text-align: center;
+  color: $orange;
+}
+.cloud-form__head {
+  text-align: center;
+}
+.cloud-form__head,
+.cloud-form__client-info {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0;
+}
+
+.cloud-form__text {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+}
+
+.cloud-form__input,
+.cloud-form__comment {
+  height: 1.7em;
+  padding: 0 20px;
+  margin-bottom: 7px;
+  font-size: 1em;
+  border: 1px solid rgba(109, 109, 109, 0.4);
+  border-radius: 5px;
+}
+
+
+.cloud-form__comment {
+  height: 3.2em;
+  resize: none;
+}
+
+.cloud-form {
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.cloud-form__client-action {
+  align-items: center;
+  justify-content: center;
+  padding-top: 0;
+  text-align: center;
+}
+
+.cloud-form__client-action > .cloud-form__text {
+  flex-direction: row;
+}
+
+.cloud-form__link {
+  display: inline;
+  width: auto;
+  padding-bottom: 1.05em;
+  font-size: 0.75em;
+  text-decoration: underline;
+  color: #000;
+  transition: all 0.5s;
+
+  &:hover {
+    font-weight: bold;
+    transition: all 0.3s;
+  }
+}
+
+
+.cloud-form__comment:focus,
+.cloud-form__input:focus {
+  color: rgba(255, 19, 19, 0.54);
+  border: 1px solid rgba(255, 19, 19, 0.54);
+  border-radius: 5px;
+  outline: none;
+}
+
+.cloud-form__comment:focus::placeholder,
+.cloud-form__input:focus::placeholder {
+  color: transparent;
+}
+
+.cloud-form__сonsent {
+  display: none;
+}
+
+.cloud-form__head,
+.cloud-form__client-info,
+.cloud-form__client-action{
+  border: 0;
+}
+
+.cloud-form__сonsent:checked + span,
+.cloud-form__сonsent + span {
+  height: 18px;
+  padding-left: 19px;
+  background: url("img/icon_checked.svg") no-repeat;
+  transition: opacity 1s ease-in-out;
+}
+
+.cloud-form__сonsent + span {
+  background: url("img/icon_check.svg") no-repeat;
+
+}
+
+.popup-question-thanks__text {
+  text-align: center;
+}
+.popup-question-thanks__title {
+  color: $orange;
+}
+.popup-question-thanks {
+  text-align: center;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.modal-content-show {
+  visibility: visible;
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+}
+
+.popup-question {
+  text-align: left;
+  border-radius: 10px;
+}

@@ -1,0 +1,251 @@
+@import "parameters.scss";
+
+/*--------------------------------------------------------------
+# Fonts
+--------------------------------------------------------------*/
+
+@font-face {
+  font-family: 'GothaProBold'; /* Гарнитура шрифта */
+  src: url('fonts/GothaProBol.otf'); /* Путь к файлу со шрифтом */
+}
+
+@font-face {
+  font-family: 'GothaProLight'; /* Гарнитура шрифта */
+  src: url('fonts/GothaProLig.otf'); /* Путь к файлу со шрифтом */
+}
+
+@font-face {
+  font-family: 'GothaProReg'; /* Гарнитура шрифта */
+  src: url('fonts/GothaProReg.otf'); /* Путь к файлу со шрифтом */
+}
+
+/*--------------------------------------------------------------
+# Animation
+--------------------------------------------------------------*/
+
+@keyframes show-panel {
+  from { left: -235px; }
+  to   { left: 0; }
+}
+
+@keyframes hidden-panel {
+  from { left: 0; }
+  to   { left: -235px; }
+}
+
+@keyframes click-me {
+  0% { right: 20px; }
+  50% { right: 25px; }
+  100% { right: 20px; }
+}
+
+/*--------------------------------------------------------------
+# Animation
+  ## Elastic
+--------------------------------------------------------------*/
+
+.hamburger-elastic {
+  .hamburger-inner {
+    top: 2px;
+    transition-duration: 0.275s;
+    transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    &::before {
+      top: 10px;
+      transition: opacity 0.125s 0.275s ease;
+    }
+
+    &::after {
+      top: 20px;
+      transition: transform 0.275s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+  }
+
+  &.is-active {
+
+    .hamburger-inner {
+      transform: translate3d(0, 10px, 0) rotate(135deg);
+      transition-delay: 0.075s;
+
+      &::before {
+        transition-delay: 0s;
+        opacity: 0;
+      }
+
+      &.hamburger-inner::after {
+        transform: translate3d(0, -20px, 0) rotate(-270deg);
+        transition-delay: 0.075s;
+      }
+    }
+  }
+}
+
+/*--------------------------------------------------------------
+# Typography
+--------------------------------------------------------------*/
+
+html, body {
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  @include font($familyReg);
+  color: #070918;
+}
+
+main {
+  width: 100%;
+  padding-bottom: 1em;
+  overflow: hidden;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @include font($familyBold, 1em);
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.single-post .site-main a {
+  color: $blue;
+  border-bottom: 1px dotted $orange;
+
+  &:hover,&:active {
+    color: $orange;
+    border-bottom: 1px solid $orange;
+  }
+}
+
+
+figure {
+  margin: 0;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.hide-text {
+  font-size: 0;
+}
+
+.container {
+  width: 95%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.flex-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.color-orange {
+  color: $orange;
+}
+
+.color-blue {
+  color: $blue;
+}
+
+.color-w {
+  color: #ffffff;
+}
+
+.text-pro {
+  text-transform: uppercase;
+  color: $orange;
+}
+
+.shadow-big {
+  box-shadow: 2px 2px 5px rgba(29, 34, 98, 0.5);
+}
+
+.shadow-small {
+  box-shadow: 1px 1px 3px rgba(29, 34, 98, 0.5);
+}
+
+.btn {
+  display: block;
+  max-width: 260px;
+  height: min-content;
+  padding: 10px 16px;
+  text-transform: uppercase;
+  text-align: center;
+  @include font($familyBold, 18px);
+  background: $orange;
+  color: #ffffff;
+  border: 1px solid $orange;
+  border-radius: 50px;
+  outline: none;
+  transition: all 0.5s;
+  box-shadow: 2px 2px 5px rgba(29, 34, 98, 0.4);
+  box-sizing: border-box;
+
+  &:enabled:hover {
+    background: $blue;
+    color: $orange;
+    box-shadow: 1px 1px 3px rgba(29, 34, 98, 0.3);
+    transition: all 0.5s;
+  }
+
+  &.disabled:disabled {
+    color: #fff;
+    background-color: #CCC;
+    border: 1px solid #6D6D6D;
+  }
+
+}
+
+.visuallyhidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+body {
+  margin-top: 60px;
+}
+
+/*-------------------breadcrumbs------------------------------*/
+
+.breadcrumbs {
+  padding-left: 20px;
+  box-sizing: border-box;
+}
+
+.breadcrumbs__link {
+  color: $blue;
+
+  &:hover {
+    color: $orange;
+  }
+}
+
+.breadcrumbs__current {
+  color: $orange;
+}

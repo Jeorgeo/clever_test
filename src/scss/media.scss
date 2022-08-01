@@ -1,0 +1,1221 @@
+@import "parameters.scss";
+
+@media screen and (min-width: 640px) {
+
+  /*--------------------------------------------------------------
+  # Typography 640px
+  --------------------------------------------------------------*/
+
+  /*--------------------------------------------------------------
+  # Header 640px
+  --------------------------------------------------------------*/
+
+  .header {
+    position: relative;
+    z-index: 99999;
+  }
+
+  .mobile-header__phone-box {
+    width: auto;
+  }
+
+  .phone-button {
+    width: auto;
+    margin: 0 10px;
+    padding: 2px 38px 2px 28px;
+    color: #ffffff;
+    @include font($familyLight, 15px);
+    line-height: 32px;
+  }
+
+  /*--------------------------------------------------------------
+  # Content 640px
+  --------------------------------------------------------------*/
+
+  .content-area {
+    padding: 1em 0;
+  }
+
+  .main-slider__offers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-end;
+
+    a {
+      width: 48%;
+    }
+  }
+
+  .tour-type__box {
+    width: 50%;
+  }
+
+  .main-about {
+    margin: 1em 0;
+    padding-top: 0;
+  }
+
+  .main-about__top {
+    padding: 2em 15px;
+    background: url('img/bg_about_b.jpg') no-repeat top left;
+    background-size: cover;
+  }
+
+  .main-about__text {
+    position: relative;
+    padding: 40px;
+    font-weight: bolder;
+  }
+
+  .main-about__advantages {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 1.5em 0;
+
+    li {
+      width: 30%;
+    }
+  }
+
+  .card-box {
+    width: 48%;
+  }
+
+  .description-box {
+    p {
+      line-height: 1.5em;
+    }
+
+    &.dark {
+      padding: 2em 0;
+    }
+  }
+  .button-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+    .offers-box__btn {
+      min-width: 250px;
+    }
+  }
+
+
+  /*--------------------------------------------------------------
+  ## Pages & Posts 640px
+  --------------------------------------------------------------*/
+
+  /*----------------------country 640px-------------------------*/
+
+  .country__info-box {
+    width: 40%;
+  }
+
+  .country__meteo-box {
+    width: 58%;
+    max-width: 330px;
+  }
+
+  /*--------------------------pay 640px--------------------------*/
+
+  .pay-box {
+    justify-content: space-between;
+  }
+
+  .pay-logo {
+    width: 40%;
+    background: #d2e8ff;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 5px;
+  }
+
+  .pay-descript {
+    display: block;
+    width: 55%;
+  }
+
+  /*-------------------------forms 640px-------------------------*/
+
+  .form-box form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .order-form__input {
+    width: 48%;
+
+    &.message {
+      width: 100%;
+    }
+  }
+
+  .order-form__сonsent {
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .order-form__btn {
+    width: 50%;
+  }
+
+  .сonsent-box {
+    width: 48%;
+  }
+
+
+  /*--------------------------------------------------------------
+  # Footer 640px
+  --------------------------------------------------------------*/
+
+  .footer__container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .footer-menu {
+    padding-left: 15px;
+  }
+
+  .footer {
+    section {
+      width: 49%;
+      &.dark {
+        width: 100%;
+      }
+    }
+
+    .phone-button {
+      width: 190px;
+    }
+
+  }
+
+  .footer .header__adress::after,
+  .footer__clock::after {
+    left: 8px;
+  }
+
+}
+
+/*============== for tablets 768px ===========================*/
+@media screen and (min-width: 768px) {
+
+  /*--------------------------------------------------------------
+  # Typography 768px
+  --------------------------------------------------------------*/
+
+  /*--------------------------------------------------------------
+  # Header 768px
+  --------------------------------------------------------------*/
+
+  /*--------------------------------------------------------------
+  # Content 768px
+  --------------------------------------------------------------*/
+
+  .main-slider {
+    position: relative;
+    padding-bottom: 1em;
+    background: url('img/bg_main.jpg') no-repeat 0 60px;
+    background-size: 40%;
+    background-attachment: fixed;
+
+    &::after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: url('img/bg_main_1.jpg') no-repeat 90% 10%;
+      background-size: 15%;
+      background-attachment: fixed;
+      content: '';
+      z-index: 9;
+    }
+
+    div {
+      position: relative;
+      z-index: 999;
+    }
+
+
+  }
+
+
+
+  .offer {
+    figure {
+      box-shadow: -3px 2px 12px rgba(29, 34, 98, 0.4);
+      transition: all 0.5s ease;
+    }
+
+    &:hover::before {
+      box-shadow: 1px 1px 3px rgba(29, 34, 98, 0.4);
+    }
+  }
+
+  .main-about {
+    margin: 0;
+  }
+
+  .flag-box__title {
+    left: 30px;
+    right: 100%;
+  }
+
+
+  /*--------------------------------------------------------------
+  # Footer 768px
+  --------------------------------------------------------------*/
+  .wrap--active {
+    padding-right: 16px;
+  }
+
+  .cloud-form__title,
+  .popup-question-thanks__title {
+    font-size: 1.9em;
+  }
+
+  .cloud-form__head > .cloud-form__text,
+  .popup-question-thanks__text {
+    font-size: 0.87em;
+  }
+  .popup-question-thanks {
+    background-color: #fff;
+  }
+
+  .cloud-form__client-action > .cloud-form__text {
+    font-size: 1em;
+  }
+
+  .cloud-form__input,
+  .cloud-form__comment {
+    height: 40px;
+  }
+
+  .cloud-form__comment {
+    padding-top: 20px;
+  }
+
+  .cloud-form__comment::placeholder,
+  .cloud-form__input::placeholder {
+    font-size: 1em;
+  }
+
+  .cloud__comment {
+    height: 100px;
+  }
+
+  .cloud-form__client-info > .cloud-form__text {
+    font-size: 1em;
+  }
+
+  .cloud-form__сonsentchecked + span,
+  .cloud-form__сonsent + span {
+    width: 19px;
+    height: 18px;
+    margin-top: 4px;
+  }
+
+}
+
+/*============== for tablets 920px ===========================*/
+@media screen and (min-width: 920px) {
+
+  /*--------------------------------------------------------------
+  # Typography 920px
+  --------------------------------------------------------------*/
+
+  /*--------------------------------------------------------------
+  # Header 920px
+  --------------------------------------------------------------*/
+  .header__btn {
+    display: block;
+    font-size: 16px;
+    padding: 9px 18px;
+  }
+
+  /*--------------------------------------------------------------
+  # Content 920px
+  --------------------------------------------------------------*/
+  .card-box {
+    width: 32%;
+  }
+
+  .main-catalog_country .card-box {
+    width: 30%;
+  }
+
+  .descriprion-box.auto::before, .main-opers::before {
+    width: 150px;
+  }
+
+  .main-about {
+    display: flex;
+    padding: 0;
+    margin-bottom: 1em;
+  }
+
+  .main-about__advantages {
+    flex-direction: column;
+    align-items: stretch;
+    height: 80%;
+    padding: 30px;
+
+    li {
+      width: 100%;
+      text-align: left;
+    }
+  }
+
+
+  .advantages__icon span,
+  .advantages__icon p {
+    margin-left: 15px
+  }
+
+  .news-box.flex-box {
+    justify-content: space-between;
+  }
+
+  .news-box__offer {
+    width: 30%;
+  }
+
+  /*--------------------------------------------------------------
+  ## Pages & Posts  920px
+  --------------------------------------------------------------*/
+
+  /*------------category-news 920px-----------------------------------*/
+
+  .category-news {
+    .news-box__offer {
+      width: 100%;
+      height: calc(100% - 25px);
+    }
+
+    main {
+      justify-content: space-between;
+      align-items: stretch;
+    }
+
+    article.post {
+      position: relative;
+      width: 48%;
+    }
+  }
+  /*----------------country 920px-----------------------------*/
+
+  .site-main.country {
+    margin-top: 1em;
+
+    .main-catalog {
+      margin: 1em 0;
+    }
+
+    .button-box {
+      width: 100%;
+    }
+  }
+
+  .country-informers {
+    margin: 2em 0;
+  }
+
+  .country__meteo-box,
+  .country__info-box {
+    margin: 0;
+  }
+
+  .country__news-box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .category-news{
+
+      .news-box__offer figure {
+        width: 100px;
+        height: 100px;
+      }
+
+      .offer-content {
+        top: 30px;
+        width: calc(100% - 115px);
+      }
+    }
+  }
+
+
+
+
+  /*------------------------about 920px------------------------*/
+
+  .site-main.about .section-title {
+    text-align: left;
+    padding-left: 20px;
+  }
+
+  .about-contacts,
+  .about-partners {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .content-box {
+    flex-direction: row-reverse;
+  }
+
+  .about-partners__logos,
+  .content-box__txt,
+  .about-partners__principes,
+  .content-box__img {
+    width: 49%;
+  }
+
+  .about-partners__logos {
+    text-align: right;
+  }
+
+  .about-partners__principes li {
+    padding-left: 27px;
+  }
+
+  .about-contacts__contacts {
+    width: 40%;
+  }
+  .about-contacts__map {
+    width: 58%;
+  }
+
+  /*-------------------reviews 920px----------------------------*/
+
+  .site-main.reviews .posted-on {
+    top: 0;
+    left: 170px;
+  }
+
+  .news-box__offer.reviews.offer::before {
+    top: 15%;
+    height: 70%;
+  }
+
+  .news-box__offer.reviews figure {
+    width: 150px;
+    height: 150px;
+  }
+
+  .offer .offer-content_reviews {
+    top: 0;
+    width: calc(100% - 170px);
+  }
+
+
+
+
+  /*--------------------------------------------------------------
+  # Footer 920px
+  --------------------------------------------------------------*/
+}
+
+/*============== for tablets 1024px ===========================*/
+@media screen and (min-width: 1024px) {
+
+  /*--------------------------------------------------------------
+  # Typography 1024px
+  --------------------------------------------------------------*/
+
+  body {
+    margin-top: 0;
+  }
+
+  main {
+    padding-bottom: 2em;
+  }
+
+  .site-main {
+    min-height: 200px;
+  }
+
+  /*--------------------------------------------------------------
+  # Header 1024px
+  --------------------------------------------------------------*/
+
+  .header {
+    box-shadow: 1px 1px 3px rgba(29, 34, 98, 0.5);
+  }
+
+  .header__top-box {
+    position: relative;
+    padding: 0.5em 0;
+    background: #ffffff;
+    box-shadow: none;
+  }
+
+  .mobile-header__hamburger,
+  .mobile-header__logo,
+  .icon-menu,
+  .phone-button:after {
+    display: none;
+  }
+
+  .sub-menu {
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .header__menu.active {
+    top: 0;
+  }
+
+  .header__logo {
+    display: block;
+    width: 120px;
+  }
+
+  .header__slogan,
+  .header__adress {
+    display: block;
+    margin-left: 20px;
+
+    p {
+      margin: 0;
+      @include font($familyLight);
+    }
+  }
+
+  .header__slogan p {
+    text-transform: uppercase;
+    line-height: 20px;
+  }
+
+  .header__adress {
+    position: relative;
+    margin-left: 28px;
+    padding-left: 20px;
+  }
+
+  .adress::after {
+    position: absolute;
+    top: 3px;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    background: url('img/icon_map_o.png') no-repeat center center;
+    background-size: contain;
+    content: '';
+  }
+
+  .mobile-header__phone-box {
+    position: relative;
+    flex-direction: column;
+  }
+
+  .phone-button {
+    position: relative;
+    height: 28px;
+    padding: 2px 39px 2px 29px;
+    color: #070918;
+    border: 1px solid transparent;
+    transition: all 0.5s;
+
+    &:hover {
+      border: 1px solid $orange;
+      transition: all 0.5s;
+
+      &::after {
+        top: 6px;
+        right: 10px;
+        display: block;
+        width: 20px;
+        height: 20px;
+        background: url('img/icon_phone_o.png') no-repeat center center;
+        background-size: contain;
+        border: none;
+        opacity: 0;
+        transition: all 0.5s;
+      }
+    }
+  }
+
+  .phone-button:hover::after {
+    opacity: 1;
+    transition: all 0.5s;
+  }
+
+  .header__menu {
+    position: relative;
+    top: 0;
+    padding: 0;
+    background: #ffffff;
+    color: #070918;
+    border-top: 1px solid rgba(29, 34, 98, 0.2);
+    box-shadow: 0 1px 2px rgba(29, 34, 98, 0.5);
+    transition: all 0.5s ease;
+
+    &.fixed{
+      position: fixed;
+      transition: all 0.5s ease;
+    }
+  }
+
+  .main-menu {
+    width: 100%;
+
+    .menu {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    li {
+      position: relative;
+      margin: 0;
+      padding: 10px;
+
+      &.menu-item > a {
+        position: relative;
+        margin: 0;
+        padding: 10px;
+        z-index: 9999;
+
+        &::after {
+          position: absolute;
+          bottom: -3px;
+          left: -5px;
+          display: block;
+          width: 0;
+          height: 3px;
+          background: $orange;
+          content: '';
+          transition: all 0.5s;
+        }
+      }
+
+      &.current_page_item a {
+        border-bottom: none;
+      }
+    }
+
+    ul.sub-menu li > a {
+      padding: 0;
+    }
+
+  }
+
+  .main-menu li.menu-item .sub-menu li:hover a::after {
+    display: none;
+  }
+
+  .main-menu li.menu-item:hover > a::after,
+  .main-menu .menu > li.current-menu-parent > a::after,
+  .home .main-menu .menu > li.current_page_item:first-child > a::after {
+    width: calc(100% + 10px);
+    transition: all 0.5s;
+  }
+
+  .main-menu li.menu-item:hover,
+  .main-menu .menu > li.current-menu-parent,
+  .home .main-menu .menu > li.current_page_item:first-child {
+    color: $orange;
+    transition: all 0.6s;
+  }
+
+  .main-menu li.menu-item .sub-menu > li:hover {
+    color: #ffffff;
+    transition: all 0.6s;
+  }
+
+  .main-menu .menu-item .sub-menu {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    display: block!important;
+    opacity: 0;
+    background: #ffffff;
+    box-shadow: 1px 1px 3px rgba(29, 34, 98, 0.5);
+    transition: all 0.5s ease;
+  }
+
+  .main-menu .menu-item:hover .sub-menu {
+    opacity: 1;
+    transition: all 0.5s ease;
+  }
+
+  .main-menu .menu-item:hover .sub-menu {
+    top: calc(100% + 2px);
+    height: auto;
+    transition: all 0.7s ease;
+  }
+
+  .main-menu .sub-menu li {
+    margin: 0;
+    padding: 5px 20px;
+    color: #070918;
+    background: #ffffff;
+    transition: all 0.5s ease;
+  }
+
+  .sub-menu li:hover {
+    color: #ffffff;
+    background: rgba(29, 34, 98, 0.5);
+    transition: all 0.5s ease;
+  }
+
+  .plus-btn {
+    display: none;
+  }
+
+
+  /*--------------------------------------------------------------
+  # Content 1024px
+  --------------------------------------------------------------*/
+
+  .cloud-descript h5,
+  .cloud-descript p {
+    margin: 0;
+  }
+
+  .main-opers__slide:hover .cloud-descript {
+    width: 150%;
+    height: auto;
+    clip: auto;
+    background: #ffffff;
+    box-shadow: 1px 1px 2px #bbbcd0;
+    padding: 10px;
+  }
+
+  .tour-type {
+    position: relative;
+    box-shadow: 1px -1px 3px rgba(29, 34, 98, 0.5);
+    z-index: 9999;
+  }
+
+  .tour-type__box {
+    width: 25%;
+
+    &:hover .tt-btn {
+      box-shadow: 0 0 2px rgba(29, 34, 98, 0.5);
+      transition: all 0.5s ease;
+    }
+  }
+
+  .tt-btn {
+    box-shadow: 1px 1px 5px rgba(29, 34, 98, 0.5);
+    transition: all 0.5s ease;
+  }
+
+
+  /*.main-about {
+    position: relative;
+    box-shadow: 0 -1px 2px rgba(29, 34, 98, 0.5);
+    z-index: 9999;
+  }*/
+
+  .card-box__more::before {
+    filter: blur(5px);
+    opacity: 0;
+    transition: all 0.8s ease;
+  }
+
+  .card-box__more:hover::before {
+    filter: blur(0);
+    opacity: 0.8;
+    transition: all 0.8s ease;
+  }
+
+  .card-box .card-box__img {
+    filter: blur(0);
+    box-shadow: 1px 1px 4px #bbbcd0;
+    transition: all 0.5s ease;
+  }
+
+  .card-box__more:hover .card-box__img {
+    filter: blur(1px);
+    box-shadow: 2px 2px 15px #bbbcd0;
+  }
+
+  .country .avia-search {
+    margin-top: 2em;
+  }
+
+  /*------------category-news 1024px-----------------------------*/
+
+  .category-news {
+    article.post {
+      margin-bottom: 2em;
+    }
+
+    .news-box__offer {
+      height: calc(100% - 15px);
+
+      figure {
+        width: 150px;
+        height: 150px;
+      }
+    }
+
+    .posted-on {
+      left: 170px;
+    }
+
+    .offer-content {
+      top: 40px;
+      width: calc(100% - 170px);
+    }
+  }
+
+
+  /*---------------------------visa 1024px----------------------*/
+
+  .visa-box__table {
+    overflow-x: auto;
+  }
+
+  /*--------------------------pay 1024px--------------------------*/
+
+  .pay-logo {
+    width: 25%;
+  }
+
+  .pay-descript {
+    width: 70%;
+  }
+
+  /*--------------------------about 1024px-------------------------*/
+
+  .about .phone-button {
+    width: auto;
+  }
+
+  /*--------------------------------------------------------------
+  ## Aside 1024px
+  --------------------------------------------------------------*/
+
+  .flex-sidebar {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .left-panel {
+    display: block;
+    width: 180px;
+    margin: 1em 20px 1em 0;
+    padding-right: 20px;
+    border-right: 1px solid rgba(29, 34, 98, 0.2);
+    box-sizing: border-box;
+
+    li{
+      position: relative;
+      margin: 10px;
+      padding: 10px;
+      text-transform: uppercase;
+
+      &::after{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: $orange;
+        content: '';
+        transition: all 0.5s;
+      }
+
+      &:hover::after {
+        width: 100%;
+        transition: all 0.5s;
+      }
+    }
+  }
+
+
+  .flex-sidebar .site-main {
+    width: calc(100% - 201px);
+  }
+
+
+  /*--------------------------------------------------------------
+  # Footer 1024px
+  --------------------------------------------------------------*/
+
+  .footer__container {
+    justify-content: space-between;
+  }
+
+  .footer {
+    section {
+      width: 24%;
+    }
+    .social li,
+    .payment li,
+    .social li a {
+      width: 30px;
+      height: 30px;
+      font-size: 0;
+    }
+
+    .mobile-header__phone-box {
+      padding: 0.3em 0;
+    }
+
+    .phone-button {
+      line-height: 1.2em;
+      height: auto;
+      margin: 0 auto;
+
+      &:hover::after {
+        display: none;
+      }
+
+      &::before {
+        top: 2px;
+      }
+
+      &:hover {
+        border: 1px solid transparent;
+        color: $orange;
+        transition: all 0.5s ease;
+      }
+    }
+
+  }
+  .footer__logo {
+    float: none;
+    width: 100%;
+    margin: 0;
+  }
+
+  .social__icon a::after,
+  .payment__icon::after {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/*=================== for PC 1280px ===========================*/
+@media screen and (min-width: 1280px) {
+
+  /*--------------------------------------------------------------
+  # Typography 1280px
+  --------------------------------------------------------------*/
+
+  /*--------------------------------------------------------------
+  # Header 1280px
+  --------------------------------------------------------------*/
+
+
+  /*--------------------------------------------------------------
+  # Content 1280px
+  --------------------------------------------------------------*/
+
+  .main-slider {
+    background: url('img/bg_main.jpg') no-repeat 0 33%;
+    background-size: 30%;
+    background-attachment: fixed;
+
+    &::after {
+      background: url('img/bg_main_1.jpg') no-repeat 90% 28%;
+      background-size: 11%;
+      background-attachment: fixed;
+    }
+  }
+
+  .main-slider__offers {
+    width: 60%;
+    margin: 3em auto 3em 30%;
+  }
+
+  .main-about {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .main-about__text {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 0 0 auto;
+  }
+
+  .main-about__top {
+    width: 60%;
+    box-sizing: border-box;
+  }
+
+  .main-about__icons {
+    width: 40%;
+    box-sizing: border-box;
+  }
+
+  .descriprion-box.auto {
+    padding-bottom: 2em;
+  }
+
+  .button-box {
+    width: 70%;
+  }
+
+  .card-box {
+    width: 24%;
+  }
+
+  /*----------------country 1280px-----------------------------*/
+
+  .country__info-box,
+  .country__news-box {
+    width: 30%;
+  }
+
+  .country__news-box {
+    margin: -1em 0 1em 0;
+  }
+
+  /*--------------------------------------------------------------
+  # Footer 1280px
+  --------------------------------------------------------------*/
+
+  .footer__container {
+    padding: 2em 0;
+  }
+
+  .footer .social li {
+    margin: 5px 10px;
+  }
+
+}
+
+/*=================== for PC 1366px ===========================*/
+@media screen and (min-width: 1366px) {
+
+  /*--------------------------------------------------------------
+  # Typography 1366px
+  --------------------------------------------------------------*/
+
+  /*--------------------------------------------------------------
+  # Header 1366px
+  --------------------------------------------------------------*/
+
+
+  /*--------------------------------------------------------------
+  # Content 1366px
+  --------------------------------------------------------------*/
+
+  .main-about__advantages li {
+    margin-bottom: 3em;
+  }
+
+  .main-about__advantages p {
+    margin-top: 1em;
+  }
+
+  .descriprion-box.avia::before,
+  .main-news::before {
+    bottom: 0;
+    left: -10px;
+    width: 25%;
+  }
+
+  .descriprion-box.avia::after,
+  .main-news::after {
+    left: 25%;
+  }
+
+  .descriprion-box.auto::after,
+  .main-opers::after {
+    left: calc(25% + 25px);
+  }
+
+  .descriprion-box.auto::before,
+  .main-opers::before {
+    width: 40%;
+  }
+
+  .descriprion-box p,
+  .button-box {
+    display: blok;
+    width: 50%;
+  }
+
+  .descriprion-box.auto .title__text {
+    display: flex;
+  }
+
+
+  /*--------------------------------------------------------------
+  # Footer 1366px
+  --------------------------------------------------------------*/
+
+}
+
+/*=================== for PC 1600px ===========================*/
+@media screen and (min-width: 1600px) {
+
+  /*--------------------------------------------------------------
+  # Typography 1600px
+  --------------------------------------------------------------*/
+
+  .container {
+    max-width: 1400px;
+  }
+
+  /*--------------------------------------------------------------
+  # Header 1600px
+  --------------------------------------------------------------*/
+
+  /*--------------------------------------------------------------
+  # Content 1600px
+  --------------------------------------------------------------*/
+
+  .main-slider {
+    padding: 4em 0;
+    h3 {
+      font-size: 1.5em;
+
+      span{
+        font-size: 2.5em;
+      }
+    }
+  }
+
+  .main-about__top {
+    width: 50%;
+  }
+
+  .main-about__icons {
+    width: 50%;
+  }
+
+
+  /*--------------------------------------------------------------
+  # Footer 1600px
+  --------------------------------------------------------------*/
+
+  .footer .payment li {
+    width: 40px;
+    height: 40px;
+  }
+
+  .payment__icon::after {
+    width: 40px;
+    height: 40px;
+  }
+
+}
+
+/*--------------------------------------------------------------
+# Costum
+--------------------------------------------------------------*/
