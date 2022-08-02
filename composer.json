@@ -1,7 +1,7 @@
 {
-  "autoload": {
-    "psr-4": {
-        "Clever\\": "local/Clever/"
+    "autoload": {
+        "psr-4": {
+            "Clever\\": "local/classes/Clever/"
+        }
     }
-  }
 }
