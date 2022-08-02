@@ -26,7 +26,7 @@ const watch = require('gulp-watch');
 
 //Проект :
 const project = '.';
-const projectDest = './local/templates/eshop_bootstrap_v4/assets';
+const projectDest = './local/components/clever/form/templates/.default';
 
 //Порядок подключения css файлов
 const styleFiles = [
@@ -63,7 +63,7 @@ gulp.task('styles', () => {
   // }))
   .pipe(sourcemaps.write('./'))
   //Выходная папка для стилей
-  .pipe(gulp.dest(projectDest + '/css'))
+  .pipe(gulp.dest(projectDest))
   .pipe(browserSync.stream());
 });
 
@@ -88,14 +88,14 @@ gulp.task('scripts', () => {
       // }))
 
       //Выходная папка для скриптов
-      .pipe(gulp.dest(projectDest + '/js'))
+      .pipe(gulp.dest(projectDest))
       .pipe(browserSync.stream());
 });
 
 //Таск для очистки папки build
 gulp.task('del', () => {
-   return del([projectDest + '/css/*'])
-   return del([projectDest + '/js/*'])
+   return del([projectDest + '*.css'])
+   return del([projectDest + '*.js'])
 });
 
 //Таск для отслеживания изменений в файлах
@@ -110,7 +110,7 @@ gulp.task('watch', () => {
    //Следить за JS файлами
    gulp.watch(project +'/src/js/**/*.js', gulp.series('scripts'))
    //При изменении HTML запустить синхронизацию
-   gulp.watch(project + "/*.html").on('change', browserSync.reload);
+   // gulp.watch(project + "/*.html").on('change', browserSync.reload);
 });
 
 //Таск по умолчанию, Запускает del, styles, scripts и watch
