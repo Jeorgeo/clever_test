@@ -1,7 +1,8 @@
 {
     "autoload": {
         "psr-4": {
-            "Clever\\": "local/classes/Clever/"
+            "Clever\\": "local/lib/Clever/",
+            "CGift\\": "local/lib/CGift/"
         }
     }
 }
