@@ -10,8 +10,6 @@ Loader::includeModule('highloadblock');
 
 /**
  * Класс для работы с подарочным сертификатом в заказе
- *
- * Основной обработчик-переключатель
  */
 class CGiftManager
 {
@@ -21,6 +19,11 @@ class CGiftManager
         // code...
     }
 
+
+    public static function test()
+    {
+        echo 'Hello Word!';
+    }
 }
 
 
