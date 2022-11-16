@@ -2,47 +2,69 @@
 const prizes = [
   {
     text: "Скидка 10%",
-    color: "hsl(197 30% 43%)",
+    color: "#456123",
+    img: "bot_icon_1.jpg",
+    id: "1",
   },
   {
     text: "Дизайн в подарок",
     color: "hsl(173 58% 39%)",
+    img: "bot_icon_1.jpg",
+    id: "2",
   },
   {
     text: "Второй сайт бесплатно",
     color: "hsl(43 74% 66%)",
+    img: "bot_icon_1.jpg",
+    id: "3",
   },
   {
     text: "Скидка 50%",
     color: "hsl(27 87% 67%)",
+    img: "bot_icon_1.jpg",
+    id: "4",
   },
   {
     text: "Блог в подарок",
     color: "hsl(12 76% 61%)",
+    img: "bot_icon_1.jpg",
+    id: "5",
   },
   {
     text: "Скидок нет",
     color: "hsl(350 60% 52%)",
+    img: "bot_icon_1.jpg",
+    id: "6",
   },
   {
     text: "Таргет в подарок",
     color: "hsl(91 43% 54%)",
+    img: "bot_icon_1.jpg",
+    id: "7",
   },
   {
     text: "Подарок 1",
     color: "hsl(91 43% 44%)",
+    img: "bot_icon_1.jpg",
+    id: "8",
   },
   {
     text: "Подарок 2",
     color: "hsl(91 43% 34%)",
+    img: "bot_icon_1.jpg",
+    id: "9",
   },
   {
     text: "Подарок 3",
     color: "hsl(91 43% 24%)",
+    img: "bot_icon_1.jpg",
+    id: "10",
   },
   {
     text: "Скидка 30% на всё",
     color: "hsl(140 36% 74%)",
+    img: "bot_icon_1.jpg",
+    id: "11",
   }
 ];
 
@@ -51,6 +73,10 @@ const wheel = document.querySelector(".deal-wheel");
 const spinner = wheel.querySelector(".spinner");
 const trigger = wheel.querySelector(".btn-spin");
 const ticker = wheel.querySelector(".ticker");
+
+// Какой номер выйграет
+const winnerSector = 5;
+const winnerSectorId = 8;
 
 // на сколько секторов нарезаем круг
 const prizeSlice = 360 / prizes.length;
@@ -71,17 +97,32 @@ let currentSlice = 0;
 // переменная для текстовых подписей
 let prizeNodes;
 
+// Определение сектора приз
+let findPrize = () => {
+    let position = 0;
+     prizes.forEach(({ id }, i) => {
+         if(winnerSectorId == id)
+         {
+             position = Math.floor(prizeSlice * i + prizeSlice / 2);
+             // position = id;
+         }
+         // position = id;
+     });
+     return position;
+};
+
 // расставляем текст по секторам
 const createPrizeNodes = () => {
   // обрабатываем каждую подпись
-  prizes.forEach(({ text, color, reaction }, i) => {
+  prizes.forEach(({ text, color, img, reaction, id }, i) => {
     // каждой из них назначаем свой угол поворота
     const rotation = ((prizeSlice * i) * -1) - prizeOffset;
     // добавляем код с размещением текста на страницу в конец блока spinner
     spinner.insertAdjacentHTML(
       "beforeend",
       // текст при этом уже оформлен нужными стилями
-      `<li class="prize" data-reaction=${reaction} style="--rotate: ${rotation}deg">
+      `<li class="prize" data-id="${id}" style="--rotate: ${rotation}deg">
+        <span class="img"><img src="${img}"></span>
         <span class="text">${text}</span>
       </li>`
     );
@@ -96,7 +137,7 @@ const createConicGradient = () => {
     `background: conic-gradient(
       from -90deg,
       ${prizes
-        // получаем цвет текущего сектора
+        // получаем цвет текущего сектора и размер сектора
         .map(({ color }, i) => `${color} 0 ${(100 / prizes.length) * (prizes.length - i)}%`)
         .reverse()
       }
@@ -159,8 +200,9 @@ trigger.addEventListener("click", () => {
   // делаем её недоступной для нажатия
   trigger.disabled = true;
   // задаём начальное вращение колеса
-  rotation = Math.floor(Math.random() * 360 + spinertia(2000, 5000));
-  // rotation = 3600 + 360 / 11;
+  // rotation = Math.floor(Math.random() * 360 + spinertia(2000, 5000));
+  rotation = 360 + findPrize() + 360 * spinertia(1, 10);
+  // rotation = 360 * spinertia(1, 10) + spinertia(1, prizeSlice);
   // убираем прошлый приз
   prizeNodes.forEach((prize) => prize.classList.remove(selectedClass));
   // добавляем колесу класс is-spinning, с помощью которого реализуем нужную отрисовку
@@ -171,6 +213,9 @@ trigger.addEventListener("click", () => {
   ticker.style.animation = "none";
   // запускаем анимацию вращение
   runTickerAnimation();
+  console.log(rotation);
+  console.log(findPrize());
+  console.log(prizeSlice);
 });
 
 // отслеживаем, когда закончилась анимация вращения колеса

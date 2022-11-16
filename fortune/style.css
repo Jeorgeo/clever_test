@@ -11,6 +11,7 @@ body {
   place-items: center;
   /* если что-то не помещается на своё место — скрываем то, что не поместилось */
   overflow: hidden;
+
 }
 
 /* общий блок для всех элементов */
@@ -36,8 +37,13 @@ body {
   grid-template-areas:
     "spinner"
     "trigger";
+    padding: 10px 5%;
+    background-color: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    border-radius: 25px;
   /* устанавливаем размер шрифта */
-  font-size: calc(var(--size) / 21);
+  font-size: calc(var(--size) / 25);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 /* всё, что относится ко внутренним элементам главного блока, будет находиться в области сетки с названием spinner */
@@ -64,6 +70,7 @@ body {
   /* устанавливаем размеры */
   width: var(--size);
   height: var(--size);
+  padding: 0;
   /* поворачиваем элемент  */
   transform: rotate(calc(var(--rotate, 25) * 1deg));
   /* рисуем круглую обводку, а всё, что не поместится, — будет скрыто за кругом */
@@ -91,6 +98,30 @@ body {
   transform: rotate(var(--rotate));
   /* запрещаем пользователю выделять мышкой текст на секторах */
   user-select: none;
+}
+
+.text {
+    display: block;
+    width: 70%;
+    padding-left: 5px;
+    box-sizing: border-box;
+}
+
+/* картинка на секторах */
+.img {
+  position: relative;
+  display: block;
+  width: 30%;
+  height: 30%;
+}
+
+.img img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* язычок */
@@ -158,11 +189,11 @@ body {
   /* делаем текст белым */
   color: white;
   /* настраиваем длительность анимации */
-  animation: selected 800ms ease;
+  animation: selectedText 800ms ease;
 }
 
 /* настраиваем анимацию текста на выпавшем секторе по кадрам */
-@keyframes selected {
+@keyframes selectedText {
   /* что происходит на 25% от начала анимации */
   25% {
     /* увеличиваем текст в 1,25 раза */
@@ -177,6 +208,37 @@ body {
   60% {
     transform: scale(1.02);
     text-shadow: 0.5vmin 0.5vmin 0 hsla(0 0% 0% / 0.1);
+  }
+  75% {
+    transform: scale(0.98);
+  }
+  85% {
+    transform: scale(1);
+  }
+}
+
+/* анимируем выпавший сектор */
+.prize.selected .img {
+  /* настраиваем длительность анимации */
+  animation: selectedImg 800ms ease;
+}
+
+/* настраиваем анимацию текста на выпавшем секторе по кадрам */
+@keyframes selectedImg {
+  /* что происходит на 25% от начала анимации */
+  25% {
+    /* увеличиваем текст в 1,25 раза */
+    transform: scale(1.25);
+    /* добавляем тексту тень */
+    box-shadow: 1vmin 1vmin 0 hsla(0 0% 0% / 0.1);
+  }
+  40% {
+    transform: scale(0.92);
+    box-shadow: 0 0 0 hsla(0 0% 0% / 0.2);
+  }
+  60% {
+    transform: scale(1.02);
+    box-shadow: 0.5vmin 0.5vmin 0 hsla(0 0% 0% / 0.1);
   }
   75% {
     transform: scale(0.98);
