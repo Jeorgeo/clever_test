@@ -68,33 +68,6 @@ const prizes = [
   }
 ];
 
-const prizes2 = [
-  {
-    text: "Скидка 10%",
-    color: "#456123",
-    img: "icon.png",
-    id: "1",
-  },
-  {
-    text: "Дизайн в подарок",
-    color: "hsl(173 58% 39%)",
-    img: "icon.png",
-    id: "2",
-  },
-  {
-    text: "Второй сайт бесплатно",
-    color: "hsl(43 74% 66%)",
-    img: "icon.png",
-    id: "3",
-  },
-  {
-    text: "Скидка 50%",
-    color: "hsl(27 87% 67%)",
-    img: "icon.png",
-    id: "4",
-    }
-];
-
 // создаём переменные для быстрого доступа ко всем объектам на странице — блоку в целом, колесу, кнопке и язычку
 const wheel = document.querySelector(".deal-wheel");
 const spinner = wheel.querySelector(".spinner");
@@ -120,6 +93,7 @@ const prizeSlice = 360 / prizes.length;
 // на какое расстояние смещаем сектора друг относительно друга
 // const prizeOffset = Math.floor(180 / prizes.length);
 const prizeOffset = 0;
+const prizeHalfset = Math.floor(180 / prizes.length);
 // прописываем CSS-классы, которые будем добавлять и убирать из стилей
 const spinClass = "is-spinning";
 const selectedClass = "selected";
@@ -160,7 +134,8 @@ const createPrizeNodes = () => {
       `<li class="prize" data-id="${id}" style="--rotate: ${rotation}deg">
         <span class="img"><img src="${img}"></span>
         <span class="text">${text}</span>
-      </li>`
+      </li>
+      <span class="line" style="--rotate: ${rotation + prizeHalfset - 0.15}deg"></span>`
     );
   });
 };
@@ -175,6 +150,7 @@ const createConicGradient = () => {
       ${prizes
         // получаем цвет текущего сектора и размер сектора
         .map(({ color }, i) => `${color} 0 ${(100 / prizes.length) * (prizes.length - i)}%`)
+        // .map(({ color }, i) => `${color} 0 ${(100 / prizes.length) * (prizes.length - i) - 0.5}% #fff 0 0.5%`)
         .reverse()
       }
     );`
@@ -264,7 +240,6 @@ spinner.addEventListener("transitionend", () => {
   // получаем текущее значение поворота колеса
   // rotation %= 360;
   rotation %= 360;
-  rotationEnd = 360 - rotation;
   console.log('rotation-end', rotation);
   // выбираем приз
   selectPrize();
