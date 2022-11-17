@@ -72,7 +72,8 @@ body {
   height: var(--size);
   padding: 0;
   /* поворачиваем элемент  */
-  transform: rotate(calc(var(--rotate, 25) * 1deg));
+  /* transform: rotate(calc(var(--rotate, 25) * 1deg)); */
+  transform: rotate(calc(var(--rotate, 0.01) * 1deg));
   /* рисуем круглую обводку, а всё, что не поместится, — будет скрыто за кругом */
   border-radius: 50%;
 }
@@ -86,18 +87,21 @@ body {
 .prize {
   /* включаем «гибкую» вёрстку */
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
   /* задаём отступы от краёв блока */
-  padding: 0 calc(var(--size) / 6) 0 calc(var(--size) / 20);
+  padding: 0 calc(var(--size) / 20) 0 calc(var(--size) / 6);
   /* устанавливаем размеры */
   width: 50%;
   height: 50%;
   /* устанавливаем координаты, относительно которых будем вращать текст */
-  transform-origin: center right;
+  transform-origin: center left;
   /* поворачиваем текст */
   transform: rotate(var(--rotate));
   /* запрещаем пользователю выделять мышкой текст на секторах */
   user-select: none;
+  position: relative;
+  left: 50%;
 }
 
 .text {
@@ -224,22 +228,15 @@ body {
   animation: selectedImg 800ms ease;
 }
 
-/* настраиваем анимацию текста на выпавшем секторе по кадрам */
 @keyframes selectedImg {
-  /* что происходит на 25% от начала анимации */
   25% {
-    /* увеличиваем текст в 1,25 раза */
     transform: scale(1.25);
-    /* добавляем тексту тень */
-    box-shadow: 1vmin 1vmin 0 hsla(0 0% 0% / 0.1);
   }
   40% {
     transform: scale(0.92);
-    box-shadow: 0 0 0 hsla(0 0% 0% / 0.2);
   }
   60% {
     transform: scale(1.02);
-    box-shadow: 0.5vmin 0.5vmin 0 hsla(0 0% 0% / 0.1);
   }
   75% {
     transform: scale(0.98);

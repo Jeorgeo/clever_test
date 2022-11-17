@@ -113,12 +113,13 @@ mailInput.addEventListener('input', function(){
 // const winnerSector = 5;
 // const winnerSectorId = 8;
 let winnerSectorId = wheel.querySelector(".js-prize").value;
-console.log(winnerSectorId);
+console.log('winnerSectorId: ', winnerSectorId);
 
 // на сколько секторов нарезаем круг
 const prizeSlice = 360 / prizes.length;
 // на какое расстояние смещаем сектора друг относительно друга
-const prizeOffset = Math.floor(180 / prizes.length);
+// const prizeOffset = Math.floor(180 / prizes.length);
+const prizeOffset = 0;
 // прописываем CSS-классы, которые будем добавлять и убирать из стилей
 const spinClass = "is-spinning";
 const selectedClass = "selected";
@@ -140,10 +141,8 @@ let findPrize = () => {
      prizes.forEach(({ id }, i) => {
          if(winnerSectorId == id)
          {
-             position = Math.floor(prizeSlice * i + prizeSlice / 2);
-             // position = id;
+             position = Math.floor( prizeSlice * i );
          }
-         // position = id;
      });
      return position;
 };
@@ -153,7 +152,7 @@ const createPrizeNodes = () => {
   // обрабатываем каждую подпись
   prizes.forEach(({ text, color, img, reaction, id }, i) => {
     // каждой из них назначаем свой угол поворота
-    const rotation = -1 * (((prizeSlice * i) * -1) - prizeOffset);
+    const rotation = (((prizeSlice * i) * -1) - prizeOffset);
     // добавляем код с размещением текста на страницу в конец блока spinner
     spinner.insertAdjacentHTML(
       "beforeend",
@@ -228,8 +227,10 @@ const runTickerAnimation = () => {
 
 // функция выбора призового сектора
 const selectPrize = () => {
-  const selected = Math.floor(rotation / prizeSlice);
+  const selected = Math.floor(rotation / prizeSlice) + 1;
   prizeNodes[selected].classList.add(selectedClass);
+  console.log('selectPrize-prizeSlice: ', prizeSlice);
+  console.log('selectPrize-rotation: ', rotation);
 };
 
 // отслеживаем нажатие на кнопку
@@ -238,9 +239,9 @@ trigger.addEventListener("click", (event) => {
   // делаем её недоступной для нажатия
   trigger.disabled = true;
   // задаём начальное вращение колеса
-  // rotation = Math.floor(Math.random() * 360 + spinertia(2000, 5000));
-  rotation = 360 + findPrize() + 360 * spinertia(1, 10);
-  // rotation = 360 * spinertia(1, 10) + spinertia(1, prizeSlice);
+  // rotation = Math.floor(Math.random() * 360 + spinertia(2000, 5000)); // рандомный выбор
+  rotation = findPrize() + 360 * spinertia(1, 10); // выбор нужного приза
+  // rotation = findPrize() + 360;
   // убираем прошлый приз
   prizeNodes.forEach((prize) => prize.classList.remove(selectedClass));
   // добавляем колесу класс is-spinning, с помощью которого реализуем нужную отрисовку
@@ -251,9 +252,9 @@ trigger.addEventListener("click", (event) => {
   ticker.style.animation = "none";
   // запускаем анимацию вращение
   runTickerAnimation();
-  console.log(rotation);
-  console.log(findPrize());
-  console.log(prizeSlice);
+  console.log('click-rotation: ', rotation);
+  console.log('click-findPrize: ', findPrize());
+  console.log('click-prizeSlice: ', prizeSlice);
 });
 
 // отслеживаем, когда закончилась анимация вращения колеса
@@ -261,7 +262,10 @@ spinner.addEventListener("transitionend", () => {
   // останавливаем отрисовку вращения
   cancelAnimationFrame(tickerAnim);
   // получаем текущее значение поворота колеса
+  // rotation %= 360;
   rotation %= 360;
+  rotationEnd = 360 - rotation;
+  console.log('rotation-end', rotation);
   // выбираем приз
   selectPrize();
   // убираем класс, который отвечает за вращение
