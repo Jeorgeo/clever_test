@@ -3,80 +3,117 @@ const prizes = [
   {
     text: "Скидка 10%",
     color: "#456123",
-    img: "bot_icon_1.jpg",
+    img: "icon.png",
     id: "1",
   },
   {
     text: "Дизайн в подарок",
     color: "hsl(173 58% 39%)",
-    img: "bot_icon_1.jpg",
+    img: "icon.png",
     id: "2",
   },
   {
     text: "Второй сайт бесплатно",
     color: "hsl(43 74% 66%)",
-    img: "bot_icon_1.jpg",
+    img: "icon.png",
     id: "3",
   },
   {
     text: "Скидка 50%",
     color: "hsl(27 87% 67%)",
-    img: "bot_icon_1.jpg",
+    img: "icon.png",
     id: "4",
   },
   {
     text: "Блог в подарок",
     color: "hsl(12 76% 61%)",
-    img: "bot_icon_1.jpg",
+    img: "icon.png",
     id: "5",
   },
   {
     text: "Скидок нет",
     color: "hsl(350 60% 52%)",
-    img: "bot_icon_1.jpg",
+    img: "icon.png",
     id: "6",
   },
   {
     text: "Таргет в подарок",
     color: "hsl(91 43% 54%)",
-    img: "bot_icon_1.jpg",
+    img: "icon.png",
     id: "7",
   },
   {
     text: "Подарок 1",
     color: "hsl(91 43% 44%)",
-    img: "bot_icon_1.jpg",
+    img: "icon.png",
     id: "8",
   },
   {
     text: "Подарок 2",
     color: "hsl(91 43% 34%)",
-    img: "bot_icon_1.jpg",
+    img: "icon.png",
     id: "9",
   },
   {
     text: "Подарок 3",
     color: "hsl(91 43% 24%)",
-    img: "bot_icon_1.jpg",
+    img: "icon.png",
     id: "10",
   },
   {
     text: "Скидка 30% на всё",
     color: "hsl(140 36% 74%)",
-    img: "bot_icon_1.jpg",
+    img: "icon.png",
     id: "11",
   }
+];
+
+const prizes2 = [
+  {
+    text: "Скидка 10%",
+    color: "#456123",
+    img: "icon.png",
+    id: "1",
+  },
+  {
+    text: "Дизайн в подарок",
+    color: "hsl(173 58% 39%)",
+    img: "icon.png",
+    id: "2",
+  },
+  {
+    text: "Второй сайт бесплатно",
+    color: "hsl(43 74% 66%)",
+    img: "icon.png",
+    id: "3",
+  },
+  {
+    text: "Скидка 50%",
+    color: "hsl(27 87% 67%)",
+    img: "icon.png",
+    id: "4",
+    }
 ];
 
 // создаём переменные для быстрого доступа ко всем объектам на странице — блоку в целом, колесу, кнопке и язычку
 const wheel = document.querySelector(".deal-wheel");
 const spinner = wheel.querySelector(".spinner");
-const trigger = wheel.querySelector(".btn-spin");
+const trigger = wheel.querySelector(".js-btnSpin");
 const ticker = wheel.querySelector(".ticker");
 
+let mailInput = wheel.querySelector(".js-mail");
+
+mailInput.addEventListener('input', function(){
+    if (mailInput.value != '') {
+        trigger.disabled = false;
+    }
+})
+
 // Какой номер выйграет
-const winnerSector = 5;
-const winnerSectorId = 8;
+// const winnerSector = 5;
+// const winnerSectorId = 8;
+let winnerSectorId = wheel.querySelector(".js-prize").value;
+console.log(winnerSectorId);
 
 // на сколько секторов нарезаем круг
 const prizeSlice = 360 / prizes.length;
@@ -116,7 +153,7 @@ const createPrizeNodes = () => {
   // обрабатываем каждую подпись
   prizes.forEach(({ text, color, img, reaction, id }, i) => {
     // каждой из них назначаем свой угол поворота
-    const rotation = ((prizeSlice * i) * -1) - prizeOffset;
+    const rotation = -1 * (((prizeSlice * i) * -1) - prizeOffset);
     // добавляем код с размещением текста на страницу в конец блока spinner
     spinner.insertAdjacentHTML(
       "beforeend",
@@ -196,7 +233,8 @@ const selectPrize = () => {
 };
 
 // отслеживаем нажатие на кнопку
-trigger.addEventListener("click", () => {
+trigger.addEventListener("click", (event) => {
+    event.preventDefault();
   // делаем её недоступной для нажатия
   trigger.disabled = true;
   // задаём начальное вращение колеса
@@ -231,8 +269,9 @@ spinner.addEventListener("transitionend", () => {
   // отправляем в CSS новое положение поворота колеса
   spinner.style.setProperty("--rotate", rotation);
   // делаем кнопку снова активной
-  trigger.disabled = false;
+  // trigger.disabled = false;
 });
+
 
 // подготавливаем всё к первому запуску
 setupWheel();

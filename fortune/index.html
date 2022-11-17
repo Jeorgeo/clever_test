@@ -17,7 +17,14 @@
   <!-- язычок барабана -->
   <div class="ticker"></div>
   <!-- кнопка -->
-  <button class="btn-spin">Испытай удачу</button>
+  <form class="form" action="" method="post">
+      <input type="hidden" class="js-prize" name="PRIZE_ID" value="8">
+      <label for="">
+          <input class="js-mail" type="mail" name="MAIL" value="">
+      </label>
+      <button class="btn-spin js-btnSpin" disabled>Испытай удачу</button>
+  </form>
+
 </div>
   <!-- подключаем скрипт -->
   <script  src="script.js"></script>
