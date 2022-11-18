@@ -71,21 +71,42 @@ const prizes = [
 // создаём переменные для быстрого доступа ко всем объектам на странице — блоку в целом, колесу, кнопке и язычку
 const wheel = document.querySelector(".deal-wheel");
 const spinner = wheel.querySelector(".spinner");
-const trigger = wheel.querySelector(".js-btnSpin");
 const ticker = wheel.querySelector(".ticker");
 
-let mailInput = wheel.querySelector(".js-mail");
+const trigger = document.querySelector(".js-btnSpin");
+let mailInput = document.querySelector(".js-mail");
+let checkBtn = document.querySelector(".js-agreementCheck");
 
 mailInput.addEventListener('input', function(){
-    if (mailInput.value != '') {
+    if (mailInput.value != '' && checkBtn.checked) {
         trigger.disabled = false;
+    } else {
+        trigger.disabled = true;
     }
 })
+
+checkBtn.addEventListener('click', function(){
+    if (mailInput.value != '' && checkBtn.checked) {
+        trigger.disabled = false;
+    } else {
+        trigger.disabled = true;
+    }
+})
+
+function drawPrize( prizeText )
+{
+    let agreementBox = document.querySelector(".js-agreementBox");
+    let emailBox = document.querySelector(".js-emailBox");
+    agreementBox.style.display = 'none';
+    mailInput.style.display = 'none';
+    trigger.innerText = "Вы выйграли";
+    emailBox.innerText = "Ваш приз: " + prizeText + "отправлен на почту " + mailInput.value;
+}
 
 // Какой номер выйграет
 // const winnerSector = 5;
 // const winnerSectorId = 8;
-let winnerSectorId = wheel.querySelector(".js-prize").value;
+let winnerSectorId = document.querySelector(".js-prize").value;
 console.log('winnerSectorId: ', winnerSectorId);
 
 // на сколько секторов нарезаем круг
@@ -249,6 +270,8 @@ spinner.addEventListener("transitionend", () => {
   spinner.style.setProperty("--rotate", rotation);
   // делаем кнопку снова активной
   // trigger.disabled = false;
+  let prizeText = document.querySelector(".prize.selected .text").innerHTML;
+  drawPrize( prizeText );
 });
 
 
