@@ -77,21 +77,27 @@ const trigger = document.querySelector(".js-btnSpin");
 let mailInput = document.querySelector(".js-mail");
 let checkBtn = document.querySelector(".js-agreementCheck");
 
-mailInput.addEventListener('input', function(){
-    if (mailInput.value != '' && checkBtn.checked) {
-        trigger.disabled = false;
-    } else {
-        trigger.disabled = true;
-    }
-})
+if (mailInput) {
+    mailInput.addEventListener('input', function(){
+        if (mailInput.value != '' && checkBtn.checked) {
+            trigger.disabled = false;
+        } else {
+            trigger.disabled = true;
+        }
+    })
+}
 
-checkBtn.addEventListener('click', function(){
-    if (mailInput.value != '' && checkBtn.checked) {
-        trigger.disabled = false;
-    } else {
-        trigger.disabled = true;
-    }
-})
+if (checkBtn) {
+    checkBtn.addEventListener('click', function(){
+        if (mailInput.value != '' && checkBtn.checked) {
+            trigger.disabled = false;
+        } else {
+            trigger.disabled = true;
+        }
+    })
+}
+
+
 
 function drawPrize( prizeText )
 {

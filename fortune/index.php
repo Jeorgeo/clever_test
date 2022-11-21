@@ -15,12 +15,12 @@ $APPLICATION->SetTitle("Рулетка");
       </div>
       <form class="form" action="" method="post">
           <input type="hidden" class="js-prize" name="PRIZE_ID" value="8">
-          <label for="">
+          <label class="js-emailBox" for="">
               введите email на который мы отправим ваш приз
               <input class="js-mail" type="mail" name="MAIL" value="" placeholder="Ваш email">
           </label>
-          <label for="">
-              <input class="js-agreement" type="checkbox" name="agreement" value="" checked required>
+          <label class="js-agreementBox" or="">
+              <input class="js-agreementCheck" type="checkbox" name="agreement" value="" checked required>
               <span>
                   Нажимая на кнопку “Испытай удачу”, вы подтверждаете свое совершеннолетие, соглашаетесь на обработку персональных данных и принимаете условия Пользовательского соглашения.
               </span>
