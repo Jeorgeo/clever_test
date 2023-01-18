@@ -2,9 +2,12 @@
 
 namespace CGift;
 
+use Bitrix\Main\ArgumentException;
 use Bitrix\Main\Loader,
     Bitrix\Highloadblock as HL,
     Bitrix\Main\Entity;
+use Bitrix\Main\ObjectPropertyException;
+use Bitrix\Main\SystemException;
 
 if (!Loader::includeModule('highloadblock')) {
     throw new CGigtException('модуль highload не подключен');
@@ -22,13 +25,7 @@ if (!Loader::includeModule('sale')) {
 class CGiftManager
 {
 
-    private const PAYMENT_GIFT_ID = 12; // ID платежной системы оплаты сертификатом
-
-    private const PAYMENT_CLOUD_ID = 10; // ID платёжной системы оплаты сервисом Cloud
-
-    private const PAYMENT_COURIER_ID = 1; // ID платёжной системы оплаты курьру
-
-    private const HL_ID = 1; // ID highloadblock блока по операциям с сертификатами.
+    private const HL_ID = 70; // ID highloadblock блока по операциям с сертификатами.
 
     /**
      * @var object // Cертификат
@@ -36,67 +33,151 @@ class CGiftManager
     private $cGift;
 
     /**
-     * @var object // Объект highloadblock блока с операциями по сертификатам
-     */
-    private $entityDataClass;
-
-    /**
      * @var int // Сумма оплаты сертификатом
      */
     private $cGiftSum;
 
     /**
-     * @var int // ID highloadblock блока по операциям с сертификатами. (уточнить возможно не пригодится)
+     * @var int // ID заказа
      */
-    private $hlBlockID;
+    private $orderID;
+
+    /**
+     * @var int // Номер сертификата
+     */
+    private $cGiftID;
+
+    /**
+     * @var int // Пин код сертификата
+     */
+    private $cGiftPin;
+
+    /**
+     * @var string // Номер текущей транзакции
+     */
+    private $transactionID;
 
     function __construct($cGiftID, $cGiftPin)
     {
         $this->cGift = new DiGiftApi($cGiftID, $cGiftPin);
 
-        $hlblockAdd = HL\HighloadBlockTable::add([
-            'NAME' => self::HL_NAME,
-            'TABLE_NAME' => self::TABLE_NAME
-        ]);
-        if (!$hlblockAdd->isSuccess() || !$hlblockAdd) {
-            $hlblockSearch = HL\HighloadBlockTable::getList(
-                [
-                    'filter' => [
-                        '=NAME' => self::HL_NAME
-                    ]
-                ])->fetch();
-            $hlBlockID = $hlblockSearch['ID'];
-        } else {
-            $hlBlockID = $hlblockAdd->getId();
+        if (!$this->cGift)
+        {
+            throw new Exception\CGigtException('Ошибка инициализации сертификата');
+        }
+        else
+        {
+            $this->cGiftID = $cGiftID;
+            $this->cGiftPin = $cGiftPin;
+        }
+    }
+
+    /**
+     * Закрепление сертификата за заказом (пока временное решение и нужно ли
+     * оно?!)
+     *
+     * @param $orderID //
+     */
+    public function setOrderID($orderID)
+    {
+        if ($orderID)
+        {
+            $this->orderID = $orderID;
         }
 
-        $hlblock = HL\HighloadBlockTable::getById($hlBlockID)->fetch();
+    }
 
-        $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+    /**
+     * Получение информации по сертификату
+     *
+     * @return array // Вся инфа из метода getInfo
+     */
+    public function getCGiftInfo()
+    {
+        $cGiftInfo = $this->cGift->getInfo();
 
-        $this->entityDataClass = $entity->getDataClass();
+        if ( $cGiftInfo )
+        {
+            $status = 1;
+            $message = 'Данные по карте';
+            $info = $cGiftInfo;
+        } else {
+            $status = 0;
+            $message = 'Карта не найдена либо не активна';
+            $info = 0;
+        }
+        // to do Нужна дополнительная обработка
 
-        $this->hlBlockID = $hlBlockID;
+        $result['status'] = $status;
+        $result['message'] = $message;
+        $result['info'] = $info;
 
+        return $result;
+    }
+
+    /**
+     * Получение остатка по подарочному сертификату
+     *
+     * @return int // Сумма остатка
+     */
+    public function getCGiftBalance()
+    {
+        $cGiftBalance = $this->cGift->getBalance();
+
+        if ( $cGiftBalance )
+        {
+            $status = 1;
+            $message = 'Запрос баланса';
+            $balance = $cGiftBalance;
+        } else {
+            $status = 0;
+            $message = 'Карта не найдена либо не активна';
+            $balance = 0;
+        }
+        // to do Нужна дополнительная обработка
+
+        $result['status'] = $status;
+        $result['message'] = $message;
+        $result['balance'] = $balance;
+
+        return $result;
     }
 
     /**
      * Инициализация сертификата (проверка статуса и баланса)
      *
-     * @param
+     * Отдельная инициализации при использовании
+     *
+     * @return array //
      */
     public function initCGift()
     {
-        $result = [];
-
         $cGiftBalance = $this->cGift->getBalance();
 
-        if ( $this->cGift->initDiGift() )
+        if ( $cGiftBalance >= 0 )
         {
             $status = 1;
-            $message = 'Карта активирована';
+            $message = 'Карта активна';
             $balance = $cGiftBalance;
-        } else {
+        }
+        elseif ( $this->cGift->initDiGift() )
+        {
+            $result = $this->cGift->getBalance();
+            if ($result > 0)
+            {
+                $status = 1;
+                $message = 'Карта активирована';
+                $balance = $result;
+            }
+            else
+            {
+                $status = 1;
+                $message = 'Карта не активна. Нет средств';
+                $balance = 0;
+            }
+        }
+        else
+        {
             $status = 0;
             $message = 'Карта не найдена либо не активна';
             $balance = 0;
@@ -112,108 +193,161 @@ class CGiftManager
     /**
      * Установка суммы погашения сертификата
      *
-     * @param
+     * @param int $cGiftSum // Сумма планируемеого списания по сертификату
+     *
+     * @return array
      */
     public function setCGiftSum($cGiftSum)
     {
 
-        $cGiftBalance = $this->cGift->getBalance();
+        $cGiftBalance = $this->cGift->getBalance(); // актуальный баланс
 
         $result = [];
 
         if ( ($cGiftBalance - $cGiftSum) >= 0 )
         {
             $this->cGiftSum = $cGiftSum;
-            $result['status'] = 1;
-            $result['message'] = 'Баланс сертификата соответствует запрашиваемой сумме';
+            $status = 1;
+            $message = 'Баланс сертификата соответствует запрашиваемой сумме';
         } else {
             $this->cGiftSum = $cGiftBalance;
-            $result['status'] = 0;
-            $result['message'] = 'Баланс сертификата меньше запрашиваемой суммы';
+            $status = 0;
+            $message = 'Баланс сертификата меньше запрашиваемой суммы';
         }
 
+        $result['status'] = $status;
+        $result['message'] = $message;
+        $result['sum'] = $this->cGiftSum;
+
         return $result;
-
     }
-
-    /**
-     * Пересчёт в корзине
-     *
-     * @param
-     */
-    private function recalculationCart()
+     public function saveOnlyTransaction( $amount, $reason = 'pay' ): array
     {
-
+        if($reason == 'pay'){$amount = -$amount;}
+        return $this->cGift->addCGiftTransaction( $amount );
     }
-
-    /**
-     * Пересчёт в заказе
-     *
-     * @param
-     */
-    private function recalculationOrder($orderID, $cGiftSum)
-    {
-        // Загружаем заказ и получаем данные по оплате сертификатом
-
-        $order = \Bitrix\Sale\Order::load($orderID);
-        $paymentCollection = $order->getPaymentCollection();
-        $orderPrice = $order->getPrice();
-        $payment = $paymentCollection->getItemById(PAYMENT_CLOUD_ID);
-
-        // Меняем сумму оплаты по текущей оплате
-
-        $payment->setField('SUM', $orderPrice - $cGiftSum );
-
-        // Добавляем сумму оплаты по сертификату
-
-        $cGiftPayment = \Bitrix\Sale\PaySystem\Manager::getObjectById(PAYMENT_GIFT_ID );
-        $newPayment = $paymentCollection->createItem($cGiftPayment);
-        $newPayment->setField('SUM', $cGiftSum );
-
-    }
-
+    
     /**
      * Записываем операцию по транзакции
      *
-     * @param
+     * @param int $amount // Сумма списания по сертификату
+     * @param string $reason // Причина списания по сертификату
+     *
+     * @return array
      */
-    private function saveTransaction()
+    public function saveTransaction( $amount, $reason = 'pay' ): array
     {
+        // предусмотреть хранение транзакции в сессии + алерты
 
+        $itemTransaction = $this->cGift->addCGiftTransaction( $amount );
+        if ( $itemTransaction['status'])
+        {
+            // Массив полей для добавления
+            $data = [
+                'UF_ORDER_ID'        => $this->orderID, // ID заказа
+                'UF_CGIFT_ID'        => $this->cGiftID, // Номер сертификата
+                'UF_CGIFT_PIN'        => $this->cGiftPin, // пин-код сертификата
+                'UF_TRANSACT_ID'     => $itemTransaction['transactionId'], // Номер транзакции в digift
+                'UF_AMAUNT'          => $itemTransaction['closedAmount'], // Сумма операции
+                'UF_DATA_ADD'        => date('d.m.Y H:i:s'),
+                'UF_API_STATUS'      => $itemTransaction['state'],
+                'UF_TRANSACT_STATUS' => 'pay', // Метка, если понадобиться в дальнейшем делать возврат
+                'UF_1S_STATUS'       => 'N', // Пока не передаём в 1С
+            ];
+
+            $hlblock = HL\HighloadBlockTable::getById(self::HL_ID)->fetch();
+            $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+            $entityDataClass = $entity->getDataClass();
+
+            $result['isSaveHL'] = 0;
+
+            if( $resultHl = $entityDataClass::add($data) )
+            {
+                $result['isSaveHL'] = 1;
+            }
+
+            $result['status'] = 1;
+            $result['message'] = 'Операция по сертификату завершена';
+            $result['amount'] = $itemTransaction['closedAmount'];
+            $result['transactionId'] = $itemTransaction['transactionId'];
+//            $result['hl_item'] = (array) $resultHl;
+
+        } else {
+            $result['status'] = 0;
+            $result['message'] = 'Ошибка транзакции';
+            $result['error'] = $itemTransaction['error'];
+        }
+
+        return $result;
     }
 
     /**
-     * Проверка последней операции по сертификату
+     * Проверка последней операции по сертификату на стороне сайта
+     *
+     * Находим по номеру заказ
+     *
+     * @param int // Номер заказа
+     *
+     * @return array // Запись из highload блока
+     */
+    private function checkLastTransaction($orderID = 0)
+    {
+        // пока не делал возможно не надо
+        return [ 'status' => 1 ];
+    }
+
+    /**
+     * Списание средств по сертификату (возврат описать отдельно)
+     *
      *
      * @param
      */
-    private function checkLastTransaction()
+    public function payTransaction($cGiftSum )
     {
+
+        if ($cGiftSum > 0)
+        {
+            $paySum = -1 * $cGiftSum;
+        }
+        else
+        {
+            $paySum = $cGiftSum;
+        }
+
+        return $this->saveTransaction( $paySum, 'pay' );
 
     }
 
     /**
-     * Списание средств по сертификату
+     * Списание средств по сертификату (возврат описать отдельно)
+     *
      *
      * @param
      */
-    public function addTransaction()
+    public function refaundTransaction($cGiftSum )
     {
+
+        $paySum = abs($cGiftSum);
+
+        return $this->saveTransaction( $paySum, 'refaund' );
 
     }
 
     /**
-     * Возврат средств по сертификату
+     * Отмена последней операции по сертификату
      *
      * @param
      */
-    public function refaundTransaction()
+    public function cancelTransaction()
     {
+        // пока не делал, уточнение нужна ли данная операция
+
+        return $this->cGift->cancelCGiftTransaction( $transactionID );
 
     }
 
     /**
-     * Обработка исключений и логирование
+     * Логирование
      *
      * @param
      */
@@ -221,7 +355,6 @@ class CGiftManager
     {
 
     }
-
 
 
 }
