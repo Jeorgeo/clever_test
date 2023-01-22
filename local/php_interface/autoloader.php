@@ -10,5 +10,7 @@ Bitrix\Main\Loader::registerAutoLoadClasses(null, array(
     'Clever\CleverWorker' => '/local/lib/Clever/CleverWorker.php',
     'Omnic' => '/local/lib/omnic.php',
     'YAManager' => '/local/lib/YAManager.php',
+    'oFile' => '/local/lib/oFile.php',
+    'BodyPost' => '/local/lib/BodyPost.php',
 ));
 ?>
