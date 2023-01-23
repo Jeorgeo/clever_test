@@ -12,37 +12,13 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 
 $segmentID = '28681570';
 
-$fileName = 'contacts_100.csv';
+$fileName = 'user_admin_100.csv';
 
 $url = __DIR__.'/'.$fileName;
 
-$content =  file_get_contents($url);
-
-// Генерируем уникальную строку для разделения частей POST запроса
-$delimiter = '-------------'.uniqid();
-
-// Формируем объект oFile содержащий файл
-$file = new oFile($filePath, 'text/plain', $content);
-
-//echo '<pre>';
-//echo print_r($file);
-//echo '</pre>';
-
-// Формируем тело POST запроса
-//$postParams = BodyPost::Get(array('field'=>'text', 'file'=>$file), $delimiter);
-
-//$postParams = [
-//    'file'  => new \CurlFile(
-//        $url,
-//        'application/octet-stream',
-//        $filePath
-//    ),
-//    'name'  => $filePath
-//    ];
-
-$postParams = [
-    'url' => $url,
-    'file'=> $fileName
+$fileParams = [
+    'file_path' => $url,
+    'file_name'=> $fileName
 ];
 
 $saveParams = [
@@ -54,26 +30,13 @@ $saveParams = [
     ]
 ];
 
-
-
-//{
-//    "segment" : {
-//        "id" :  < int > ,
-//        "name" :  < string > ,
-//        "hashed" :  < boolean > ,
-//        "content_type" :  < segment_content_type >
-//    }
-//}
-
-//echo $post;
-
 //YAManager::getYAToken($code);
 
 $res = YAManager::getSegments();
 
-//YAManager::addDataForSegment($postParams, $segmentID);
+//YAManager::addDataForSegment($fileParams, $segmentID);
 
-YAManager::addNewSegment($postParams);
+YAManager::createNewSegment($fileParams);
 
 //YAManager::saveNewSegment($saveParams, $segmentID);
 

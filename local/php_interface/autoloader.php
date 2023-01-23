@@ -12,5 +12,8 @@ Bitrix\Main\Loader::registerAutoLoadClasses(null, array(
     'YAManager' => '/local/lib/YAManager.php',
     'oFile' => '/local/lib/oFile.php',
     'BodyPost' => '/local/lib/BodyPost.php',
+    'FilesСlass' => '/local/lib/files.php',
+    'HlClass' => '/local/lib/hl.php'
 ));
+
 ?>

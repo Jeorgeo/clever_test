@@ -9,57 +9,31 @@ class YAManager
 
     const TOKEN = y0_AgAAAAAVTqcaAAjLfgAAAADWQeFc_meqvInNS6aOqy49bIY_Mc_aDxU; // токен
 
+
     /**
      * @param $params
-     * @param $url
-     * @param string $type
-     * @param $post
-     * @return mixed
+     * @return mixed|void
      */
-    private static function sendCurl($params, $url, string $type)
+    private static function sendRequest($params)
     {
-        $token = self::TOKEN;
 
-        switch ($type)
-        {
-            // Установка HTTP-заголовков запроса
-            case 'file':
-                $headers = array(
-                    "Authorization: Bearer $token", // OAuth-токен. Использование слова Bearer обязательно
-                    "Content-Type: multipart/form-data",
-                );
-//                $body = $params;
-                $body = [
-                    'file'  => new \CurlFile(
-                        $params['url'],
-                        'application/octet-stream',
-                        $params['file']
-                    ),
-                    'name'  => $params['file']
-                ];
-                $post = true;
-                break;
-            case 'json':
-                $headers = array(
-                    "Authorization: Bearer $token",                   // OAuth-токен. Использование слова Bearer обязательно
-                    "Accept-Language: ru",                            // Язык ответных сообщений
-                    "Content-Type: application/json; charset=utf-8"   // Тип данных и кодировка запроса
-                );
-                // Преобразование входных параметров запроса в формат JSON
-                $body = json_encode($params, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                $post = false;
-                break;
-        }
+        $getParams = self::getParamsForRequest($params);
 
-        if (isset($headers) && isset($body))
+        $url = $params['url'];
+        $method = $params['method'];
+
+        $header = $getParams['header'];
+        $body = $getParams['body'];
+
+        if (isset($header) && isset($body))
         {
             // Инициализация cURL
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
 
-            if ($post)
+            if ($method == 'post')
             {
                 curl_setopt($curl, CURLOPT_POST, true);
             }
@@ -72,8 +46,6 @@ class YAManager
             curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
 
-
-
             // Выполнение запроса, получение результата
             $result = curl_exec($curl);
 
@@ -81,78 +53,68 @@ class YAManager
 
 //            $response = json_decode($result, true);
 //
-//            echo '<pre>';
-//            echo print_r($response);
-//            echo print_r($headers);
-//            echo print_r($body);
-//            echo '</pre>';
+
         }
 
     }
 
-    public static function getYAToken($code = '')
+    /**
+     * @param $params
+     * @return array
+     */
+    private static function getParamsForRequest($params): array
     {
-        // Если скрипт был вызван с указанием параметра "code" в URL,
-        if ($code)
-        {
-            // Формирование параметров (тела) POST-запроса с указанием кода подтверждения
-//            $query = array(
-//                'grant_type' => 'authorization_code',
-//                'code' => $code,
-//                'client_id' => self::CLIENT_ID,
-//                'client_secret' => self::CLIENT_SECRET
-//            );
-            $query = array(
-                'response_type' => 'token',
-//                'code' => $code,
-                'client_id' => self::CLIENT_ID,
-//                'client_secret' => self::CLIENT_SECRET
-            );
-            $query = http_build_query($query);
-
-            // Формирование заголовков POST-запроса
-            $header = "Content-type: application/x-www-form-urlencoded";
-
-            // Выполнение POST-запроса и вывод результата
-            $opts = array('http' =>
-                array(
-                    'method' => 'POST',
-                    'header' => $header,
-                    'content' => $query
-                )
-            );
-            $context = stream_context_create($opts);
-            $result = file_get_contents(self::OAUTH_URL, false, $context);
-//            $result = json_decode($result);
-
-            // Токен необходимо сохранить для использования в запросах к API Директа
-            echo '<pre>';
-            echo print_r($result);
-            echo '</pre>';
-//            echo $result->access_token;
-        }
-        // Если скрипт был вызван без указания параметра "code",
-        // пользователю отображается ссылка на страницу запроса доступа
-        else
-        {
-            echo '<a href="https://oauth.yandex.ru/authorize?response_type=code&client_id=' . self::CLIENT_ID . '">Страница запроса доступа</a>';
-        }
-    }
-
-    public static function getSegments()
-    {
-        $url = 'https://api-audience.yandex.ru/v1/management/segments';
-
-        /** @var TYPE_NAME $result */
+        $token = self::TOKEN;
         $result = array();
+
+        switch ($params['type_data'])
+        {
+            // Установка HTTP-заголовков запроса
+            case 'file':
+                $result['header'] = [
+                    "Authorization: Bearer $token", // OAuth-токен. Использование слова Bearer обязательно
+                    "Content-Type: multipart/form-data",
+                ];
+                $result['body'] = [
+                    'file'  => new \CurlFile(
+                        $params['file_path'],
+                        'application/octet-stream',
+                        $params['file_name']
+                    ),
+                    'name'  => $params['file_name']
+                ];
+                break;
+            case 'json':
+                $result['header'] = [
+                    "Authorization: Bearer $token",                   // OAuth-токен. Использование слова Bearer обязательно
+                    "Accept-Language: ru",                            // Язык ответных сообщений
+                    "Content-Type: application/json; charset=utf-8"   // Тип данных и кодировка запроса
+                ];
+                // Преобразование входных параметров запроса в формат JSON
+                $result['body'] = json_encode($params['params'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                break;
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getSegments(): array
+    {
 
         // Параметры запроса к серверу API
         $params = [
             'method' => 'get',
-            'params' => array()
+            'params' => array(),
+            'url' => 'https://api-audience.yandex.ru/v1/management/segments',
+            'type_data' => 'json',
         ];
 
-        $response = self::sendCurl($params, $url, 'json', 0);
+        $result = array();
+
+        $response = self::sendRequest($params);
 
         if (isset($response['segments']))
         {
@@ -171,8 +133,15 @@ class YAManager
 
     }
 
-    public static function addDataForSegment($params, $segmentID)
+    /**
+     * @param $fileParams
+     * @param $segmentID
+     * @return array
+     */
+    public static function addDataForSegment($fileParams, $segmentID): array
     {
+
+        $result = array();
 
         if (isset($segmentID))
         {
@@ -180,122 +149,96 @@ class YAManager
             $url .= $segmentID;
             $url .= '/modify_data?modification_type=addition'; // метод изменение данных сегмента, тип изменения данных: добавление
 
-            $token = self::TOKEN;
+            // Параметры запроса к серверу API
+            $params = [
+                'method'    => 'post',
+                'url'       => $url,
+                'type_data' => 'file',
+                'file_name' => $fileParams['file_name'],
+                'file_path' => $fileParams['file_path']
+            ];
 
-            // Установка HTTP-заголовков запроса
-            $headers = array(
-                "Authorization: Bearer $token", // OAuth-токен. Использование слова Bearer обязательно
-                "Content-Type: multipart/form-data"
-            );
+            $response = self::sendRequest($params);
 
-//            $body = [
-//                'file'  => new \CurlFile(
-//                    $params['url'],
-//            'application/octet-stream',
-//                    $params['file']
-//                    ),
-//                'name'  => $params['file'],
-//            ];
+            if ( $response )
+            {
+                $result['id'] = $response['id'];
+                $result['name'] = $response['name'];
+                $result['type'] = $response['type'];
+                $result['status'] = $response['status'];
+                $result['create_time'] = $response['create_time'];
+                $result['content_type'] = $response['content_type'];
+            }
 
-            // Инициализация cURL
-//            $curl = curl_init();
-//            curl_setopt($curl, CURLOPT_URL, $url);
-//            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-//            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-//            curl_setopt($curl, CURLOPT_POST, true);
-//            curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
-//
-//            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
-
-            // Выполнение запроса, получение результата
-//            $result = curl_exec($curl);
-//            $result = json_decode($result, true);
-            $response = self::sendCurl($params, $url, 'file', 1);
-
-
-            echo '<pre>';
-            echo print_r($response);
-            echo print_r($params);
-//            echo print_r($body);
-            echo '</pre>';
         }
 
+        return $result;
     }
 
-    public static function addNewSegment($params)
+    /**
+     * @param $fileParams
+     * @return array
+     */
+    public static function createNewSegment($fileParams): array
     {
 
-//            $token = self::TOKEN;
-            $url = 'https://api-audience.yandex.ru/v1/management/segments/upload_csv_file'; //upload_csv_file / upload_file
+        $url = 'https://api-audience.yandex.ru/v1/management/segments/upload_csv_file'; //upload_csv_file / upload_file
 
-            // Установка HTTP-заголовков запроса
-//            $headers = array(
-//                "Authorization: Bearer $token", // OAuth-токен. Использование слова Bearer обязательно
-//                "Content-Type: multipart/form-data",
-//            );
+        // Параметры запроса к серверу API
+        $params = [
+            'method'    => 'post',
+            'url'       => $url,
+            'type_data' => 'file',
+            'file_name' => $fileParams['file_name'],
+            'file_path' => $fileParams['file_path']
+        ];
 
-            // Инициализация cURL
-//            $curl = curl_init();
-//            curl_setopt($curl, CURLOPT_URL, $url);
-//            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-//            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-//            curl_setopt($curl, CURLOPT_POST, true);
-//            curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
-//
-//            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+        $result = array();
+
+        $response = self::sendRequest($params);
+
+        if ($response['id'] == 'uploaded')
+        {
+            $result['id'] = $response['id'];
+            $result['hashed'] = $response['hashed'];
+            $result['status'] = $response['status'];
+        }
+
+        return $result;
 
 
-            // Выполнение запроса, получение результата
-//            $result = curl_exec($curl);
-//            $result = json_decode($result, true);
+        echo '<pre>';
+        echo print_r($response);
+        echo print_r($params);
+        echo '</pre>';
 
-        $response = self::sendCurl($params, $url, 'file', 1);
+    }
 
+    public static function saveNewSegment($params, $segmentID, $segmentName)
+    {
+        if (isset($segmentID) && $params['status'] == 'uploaded') {
+
+            $url = "https://api-audience.yandex.ru/v1/management/segment/$segmentID/confirm";
+
+            $sendParams = [
+                'method'    => 'post',
+                'url'       => $url,
+                'type_data' => 'json',
+                'params' => [
+                    'segment'   => [
+                        'id'            => $segmentID,
+                        'name'          => $segmentName,
+                        'hashed'        => $params['hashed'] ? : 0,
+                        'content_type'  => crm
+                    ]
+                ]
+            ];
+
+            $response = self::sendRequest($sendParams);
 
             echo '<pre>';
             echo print_r($response);
             echo print_r($params);
-//            echo print_r($result);
-            echo '</pre>';
-
-    }
-
-    public static function saveNewSegment($params, $segmentID)
-    {
-        if (isset($segmentID)) {
-//            $token = self::TOKEN;
-            $url = "https://api-audience.yandex.ru/v1/management/segment/$segmentID/confirm";
-
-            // Установка HTTP-заголовков запроса
-//            $headers = array(
-//                "Authorization: Bearer $token", // OAuth-токен. Использование слова Bearer обязательно
-//                "Content-Type: application/json; charset=utf-8",
-//            );
-
-            // Преобразование входных параметров запроса в формат JSON
-            $body = json_encode($params, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-
-            // Инициализация cURL
-//            $curl = curl_init();
-//            curl_setopt($curl, CURLOPT_URL, $url);
-//            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-//            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-//            curl_setopt($curl, CURLOPT_POST, true);
-//            curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
-//
-//            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
-
-
-            // Выполнение запроса, получение результата
-//            $result = curl_exec($curl);
-//            $result = json_decode($result, true);
-
-            $response = self::sendCurl($params, $url, 'file', 1);
-
-            echo '<pre>';
-            echo print_r($headers);
-            echo print_r($params);
-            echo print_r($result);
             echo '</pre>';
         }
 
