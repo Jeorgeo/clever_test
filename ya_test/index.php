@@ -10,7 +10,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 
 //echo $code;
 
-$segmentID = '28681570';
+$segmentID = '28719903';
 
 $fileName = 'user_admin_100.csv';
 
@@ -22,13 +22,26 @@ $fileParams = [
 ];
 
 $saveParams = [
-    'segment'=>[
-        'id'=> $segmentID,
-        'name'=> 'сохранённый сегмент',
-        'hashed'=> 0,
-        'content_type'=>crm
-    ]
+        'id'            => $segmentID,
+        'name'          => 'сохранённый сегмент',
+        'status'        => 'uploaded',
+        'hashed'        => 0,
+        'content_type'  =>crm
 ];
+
+//[segment] => Array
+//(
+//    [id] => 28719903
+//            [type] => uploading
+//[status] => uploaded
+//[has_guests] =>
+//            [guest_quantity] => 0
+//            [can_create_dependent] =>
+//            [has_derivatives] =>
+//            [hashed] =>
+//            [item_quantity] => 100
+//            [guest] =>
+//        )
 
 //YAManager::getYAToken($code);
 
@@ -36,9 +49,9 @@ $res = YAManager::getSegments();
 
 //YAManager::addDataForSegment($fileParams, $segmentID);
 
-YAManager::createNewSegment($fileParams);
+//YAManager::createNewSegment($fileParams);
 
-//YAManager::saveNewSegment($saveParams, $segmentID);
+YAManager::saveNewSegment($saveParams, $segmentID, 'сохранённый сегмент');
 
 echo '<pre>';
 echo print_r($res);

@@ -51,9 +51,6 @@ class YAManager
 
             return json_decode($result, true);
 
-//            $response = json_decode($result, true);
-//
-
         }
 
     }
@@ -158,17 +155,7 @@ class YAManager
                 'file_path' => $fileParams['file_path']
             ];
 
-            $response = self::sendRequest($params);
-
-            if ( $response )
-            {
-                $result['id'] = $response['id'];
-                $result['name'] = $response['name'];
-                $result['type'] = $response['type'];
-                $result['status'] = $response['status'];
-                $result['create_time'] = $response['create_time'];
-                $result['content_type'] = $response['content_type'];
-            }
+            $result = self::getArr($params, $result);
 
         }
 
@@ -206,16 +193,12 @@ class YAManager
 
         return $result;
 
-
-        echo '<pre>';
-        echo print_r($response);
-        echo print_r($params);
-        echo '</pre>';
-
     }
 
-    public static function saveNewSegment($params, $segmentID, $segmentName)
+    public static function saveNewSegment($params, $segmentID)
     {
+        $result = array();
+
         if (isset($segmentID) && $params['status'] == 'uploaded') {
 
             $url = "https://api-audience.yandex.ru/v1/management/segment/$segmentID/confirm";
@@ -227,21 +210,38 @@ class YAManager
                 'params' => [
                     'segment'   => [
                         'id'            => $segmentID,
-                        'name'          => $segmentName,
+                        'name'          => $params['name'],
                         'hashed'        => $params['hashed'] ? : 0,
                         'content_type'  => crm
                     ]
                 ]
             ];
 
-            $response = self::sendRequest($sendParams);
-
-            echo '<pre>';
-            echo print_r($response);
-            echo print_r($params);
-            echo '</pre>';
+            $result = self::getArr($sendParams, $result);
         }
 
+        return $result;
+
+    }
+
+    /**
+     * @param array $sendParams
+     * @param array $result
+     * @return array
+     */
+    public static function getArr(array $sendParams, array $result): array
+    {
+        $response = self::sendRequest($sendParams);
+
+        if ($response) {
+            $result['id'] = $response['id'];
+            $result['name'] = $response['name'];
+            $result['type'] = $response['type'];
+            $result['status'] = $response['status'];
+            $result['create_time'] = $response['create_time'];
+            $result['content_type'] = $response['content_type'];
+        }
+        return $result;
     }
 
 }
