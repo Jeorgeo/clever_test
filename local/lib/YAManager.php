@@ -168,9 +168,8 @@ class YAManager
      */
     public static function createNewSegment($fileParams): array
     {
-
+        $result = array();
         $url = 'https://api-audience.yandex.ru/v1/management/segments/upload_csv_file'; //upload_csv_file / upload_file
-
         // Параметры запроса к серверу API
         $params = [
             'method'    => 'post',
@@ -180,26 +179,30 @@ class YAManager
             'file_path' => $fileParams['file_path']
         ];
 
-        $result = array();
-
         $response = self::sendRequest($params);
 
-        if ($response['id'] == 'uploaded')
+        if (isset($response['segment']))
         {
-            $result['id'] = $response['id'];
-            $result['hashed'] = $response['hashed'];
-            $result['status'] = $response['status'];
+            $result['id'] = $response['segment']['id'];
+            $result['hashed'] = $response['segment']['hashed'];
+            $result['status'] = $response['segment']['status'];
         }
 
         return $result;
 
     }
 
-    public static function saveNewSegment($params, $segmentID)
+    /**
+     * @param $params
+     * @return array
+     */
+    public static function saveNewSegment($params): array
     {
         $result = array();
 
-        if (isset($segmentID) && $params['status'] == 'uploaded') {
+        $segmentID = $params['id'];
+
+        if (isset($segmentID)) {
 
             $url = "https://api-audience.yandex.ru/v1/management/segment/$segmentID/confirm";
 
@@ -212,7 +215,7 @@ class YAManager
                         'id'            => $segmentID,
                         'name'          => $params['name'],
                         'hashed'        => $params['hashed'] ? : 0,
-                        'content_type'  => crm
+                        'content_type'  => 'crm'
                     ]
                 ]
             ];
@@ -233,15 +236,36 @@ class YAManager
     {
         $response = self::sendRequest($sendParams);
 
-        if ($response) {
-            $result['id'] = $response['id'];
-            $result['name'] = $response['name'];
-            $result['type'] = $response['type'];
-            $result['status'] = $response['status'];
-            $result['create_time'] = $response['create_time'];
-            $result['content_type'] = $response['content_type'];
+        if ($response['segment']) {
+            $result['id'] = $response['segment']['id'];
+            $result['name'] = $response['segment']['name'];
+            $result['type'] = $response['segment']['type'];
+            $result['status'] = $response['segment']['status'];
+            $result['create_time'] = $response['segment']['create_time'];
+            $result['content_type'] = $response['segment']['content_type'];
+            $result['hashed'] = $response['segment']['hashed'];
         }
         return $result;
+    }
+
+    /**
+     * @param $fileParams
+     * @param $name
+     * @return array
+     */
+    public static function addNewSegment($fileParams, $name): array
+    {
+        $result = array();
+        $createSegmentParams = self::createNewSegment($fileParams);
+
+        if ($createSegmentParams['id'] && $createSegmentParams['status'] == 'uploaded')
+        {
+            $createSegmentParams['name'] = $name;
+            $result = self::saveNewSegment($createSegmentParams);
+        }
+
+        return $result;
+
     }
 
 }

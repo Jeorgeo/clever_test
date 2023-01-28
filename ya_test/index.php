@@ -12,7 +12,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 
 $segmentID = '28719903';
 
-$fileName = 'user_admin_100.csv';
+$fileName = 'user_admin_200.csv';
 
 $url = __DIR__.'/'.$fileName;
 
@@ -49,12 +49,15 @@ $res = YAManager::getSegments();
 
 //YAManager::addDataForSegment($fileParams, $segmentID);
 
-//YAManager::createNewSegment($fileParams);
+//$res1 = YAManager::createNewSegment($fileParams);
 
-YAManager::saveNewSegment($saveParams, $segmentID, 'сохранённый сегмент');
+//YAManager::saveNewSegment($saveParams, $segmentID, 'сохранённый сегмент');
+
+//$res1 = YAManager::addNewSegment($fileParams, 'фрагмент2');
 
 echo '<pre>';
 echo print_r($res);
+echo print_r($res1);
 echo '</pre>';
 
 
